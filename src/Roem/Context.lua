@@ -1,3 +1,4 @@
+package.path = package.path ..";../src/?.lua"
 local Object		     = require "Roem.Object"
 local Suite			     = require "Roem.Suite"
 local Spec			     = require "Roem.Spec"

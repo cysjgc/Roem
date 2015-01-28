@@ -8,14 +8,15 @@ pl.dir = require "pl.dir"
 local lfs = require "lfs"
 local cli = require "cliargs"
 
+package.path = package.path ..";../src/?.lua"
 local Context = require "Roem.Context"
 local Reporter = require "Roem.Reporter"
 
 local function getArgs()
 	local defaults = 
 	{
-		pattern = "^%./spec/.+%.lua$", 
-		lpath = "./src/?.lua;./src/?/init.lua", 
+		pattern = "^%.%./.+%.lua$", 
+		lpath = "../src/Roem/?.lua;../src/Roem/?/init.lua", 
 	}
 	
 	cli:set_name("roem")
@@ -26,6 +27,7 @@ local function getArgs()
 	if hasError then
 		os.exit(1)
 	end
+	
 	return args
 end
 
@@ -37,12 +39,15 @@ local function setup(args)
 	
 	local files = list.map(function(path)
 		return string.gsub(path, "\\", "/")
-	end, pl.dir.getallfiles("."))
+	end, pl.dir.getallfiles("../spec"))
 	
 	files = list.filter(function(path)
 		return string.match(path, args.pattern) ~= nil
 	end, files)
-	
+
+	table.foreach(files,function(k, v )
+		print(k, v)
+	end)
 	return files
 end
 
